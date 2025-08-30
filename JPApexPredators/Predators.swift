@@ -44,4 +44,13 @@ class Predators {
             }
         }
     }
+    
+    func filter(by type: ApexPredator.APType) {
+        if type == .all {
+        } else {
+            apexPredators = apexPredators.filter { predator in
+                predator.type == type
+            }
+        }
+    }
 }

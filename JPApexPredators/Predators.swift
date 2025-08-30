@@ -26,4 +26,12 @@ class Predators {
             }
         }
     }
+    
+    func search(for searchTerm: String) -> [ApexPredator] {
+        if searchTerm.isEmpty {
+            return apexPredators
+        }
+        
+        return apexPredators.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
+    }
 }

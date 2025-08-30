@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    let predators = Predators()
+    @State var searchText: String = ""
+    
     var filteredDinos: [ApexPredator] {
+        return predators.search(for: searchText)
     }
     
     var body: some View {
@@ -44,6 +48,7 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Apex Predators")
+            .searchable(text: $searchText)
             .autocorrectionDisabled()
             .animation(.default, value: searchText)
         }

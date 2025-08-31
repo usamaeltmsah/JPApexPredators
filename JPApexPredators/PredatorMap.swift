@@ -12,33 +12,70 @@ struct PredatorMap: View {
     let predators = Predators()
     @State var position: MapCameraPosition
     @State var satallite = false
+    @State var selectedPredator: ApexPredator?
+    @State var showAnnotationInfo = false
     
     var body: some View {
-        Map(position: $position) {
-            ForEach(predators.apexPredators) { predator in
-                Annotation(predator.name, coordinate: predator.location) {
-                    Image(predator.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 100)
-                        .shadow(color: .white, radius: 3)
-                        .scaleEffect(x: -1)
+        
+        GeometryReader { geo in
+            Map(position: $position) {
+                ForEach(predators.apexPredators) { predator in
+                    Annotation(predator.name, coordinate: predator.location) {
+                        ZStack {
+                            Image(predator.image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 100)
+                                .shadow(color: .white, radius: 3)
+                                .scaleEffect(x: -1)
+                                .onTapGesture {
+                                    withAnimation {
+                                        showAnnotationInfo.toggle()
+                                    }
+                                }
+                            
+                            if showAnnotationInfo {
+                                ZStack {
+                                    Color.black
+                                    VStack(alignment: .trailing, spacing: 4) {
+                                        Button {
+                                            withAnimation {
+                                                showAnnotationInfo.toggle()
+                                            }
+                                        } label: {
+                                            Image(systemName: "xmark.circle")
+                                                .font(.largeTitle)
+                                        }
+                                        .padding(.top)
+                                        .padding(.trailing)
+                                        Text(predator.name)
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.white)
+                                            .padding()
+                                            .frame(alignment: .center)
+                                    }
+                                }
+                                .clipShape(.rect(cornerRadius: 10))
+                            }
+                        }
+                    }
                 }
             }
-        }
-        .mapStyle(satallite ? .imagery(elevation: .realistic) : .standard(elevation: .realistic))
-        .overlay(alignment: .bottomTrailing) {
-            Button {
-                satallite.toggle()
-            } label: {
-                Image(systemName: satallite ? "globe.americas.fill" : "globe.americas")
-                    .font(.largeTitle)
-                    .imageScale(.large)
-                    .padding(3)
-                    .background(.ultraThinMaterial)
-                    .clipShape(.rect(cornerRadius: 7))
-                    .shadow(radius: 3)
-                    .padding()
+            .mapStyle(satallite ? .imagery(elevation: .realistic) : .standard(elevation: .realistic))
+            .overlay(alignment: .bottomTrailing) {
+                Button {
+                    satallite.toggle()
+                } label: {
+                    Image(systemName: satallite ? "globe.americas.fill" : "globe.americas")
+                        .font(.largeTitle)
+                        .imageScale(.large)
+                        .padding(3)
+                        .background(.ultraThinMaterial)
+                        .clipShape(.rect(cornerRadius: 7))
+                        .shadow(radius: 3)
+                        .padding()
+                }
             }
         }
         .toolbarBackground(.automatic)

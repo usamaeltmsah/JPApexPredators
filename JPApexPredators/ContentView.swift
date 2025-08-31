@@ -13,9 +13,12 @@ struct ContentView: View {
     @State var searchText: String = ""
     @State var alphabetical: Bool = false
     @State var currentSelection = ApexPredator.APType.all
+    @State var currentSelectedMovie = "All Movies"
+    @State var allMovies = Set<String>()
     
     var filteredDinos: [ApexPredator] {
         predators.filter(by: currentSelection)
+        predators.filter(by: currentSelectedMovie)
         predators.sort(by: alphabetical)
         return predators.search(for: searchText)
     }
@@ -77,6 +80,11 @@ struct ContentView: View {
                                 Label(type.rawValue.capitalized, systemImage: type.icon)
                             }
                         }
+                        Picker("Movie", selection: $currentSelectedMovie) {
+                            ForEach(allMovies.sorted(by: <), id: \.self) { movie in
+                                Text(movie)
+                            }
+                        }
                     } label: {
                         Image(systemName: "slider.horizontal.3")
                     }
@@ -84,6 +92,12 @@ struct ContentView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .onAppear {
+            allMovies.insert("All Movies")
+            predators.allApexPredators.forEach { predator in
+                allMovies = allMovies.union(predator.movies)
+            }
+        }
     }
 }
 

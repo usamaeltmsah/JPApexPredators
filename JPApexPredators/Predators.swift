@@ -56,4 +56,10 @@ class Predators {
             }
         }
     }
+    
+    func filter(by movie: String) {
+        if movie != "All Movies" {
+            apexPredators = apexPredators.filter { $0.movies.contains(movie) }
+        }
+    }
 }

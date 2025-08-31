@@ -55,6 +55,16 @@ struct ContentView: View {
                                 .clipShape(.capsule)
                         }
                     }
+                    .swipeActions {
+                        Button(role: .destructive) {
+                            if let index = predators.allApexPredators.firstIndex(where: { $0.id == predator.id }) {
+                                predators.allApexPredators.remove(at: index)
+                            }
+                        } label: {
+                            Label("Delete", systemImage: "trash.fill")
+                        }
+                    }
+                    .tint(.red)
                 }
             }
             .navigationTitle("Apex Predators")

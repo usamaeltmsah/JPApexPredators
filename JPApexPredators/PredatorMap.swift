@@ -30,11 +30,12 @@ struct PredatorMap: View {
                                 .scaleEffect(x: -1)
                                 .onTapGesture {
                                     withAnimation {
+                                        selectedPredator = predator
                                         showAnnotationInfo.toggle()
                                     }
                                 }
                             
-                            if showAnnotationInfo {
+                            if showAnnotationInfo && selectedPredator?.id == predator.id {
                                 ZStack {
                                     Color.black
                                     VStack(alignment: .trailing, spacing: 4) {

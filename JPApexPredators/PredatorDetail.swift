@@ -39,8 +39,8 @@ struct PredatorDetail: View {
                             .frame(width: geo.size.width/1.5, height: geo.size.height/3.7)
                             .scaleEffect(x: -1)
                             .shadow(color: .black, radius: 7)
-                            .offset(y: 20)
                             .matchedTransitionSource(id: 2, in: namespace)
+                            .offset(y: 20)
                     }
                 }
                 
